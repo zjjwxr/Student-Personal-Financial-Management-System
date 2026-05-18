@@ -1,0 +1,24 @@
+#pragma once
+#include "Configure.h"
+#include "Button.h"
+#include "textBox.h"
+#include "Window.h"
+#include <vector>
+class Management {
+	enum State {
+		LOGIN,
+		MENU
+	};
+public:
+	Management();
+	void run();// 运行系统
+	void login(); // 登录系统
+	void menu(); //目录界面
+private:
+	IMAGE m_background;
+	inline static ExMessage m_msg;
+
+	std::vector<Button*> login_Buttons;
+	std::vector<textBox*>login_textBoxes;
+};
+
