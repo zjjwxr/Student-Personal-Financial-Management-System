@@ -1,9 +1,10 @@
 #pragma once
 #include "BasicWidget.h"
 #include "Configure.h"
+#include "Text.h"
 class Button :public BasicWidget{
 private:
-	std::wstring m_text;
+	Text m_text;
 	COLORREF m_normalColor=RGB(77,77,77);
 	COLORREF m_hoverColor=RED;
 	COLORREF m_currentColor=RGB(77,77,77);
@@ -15,6 +16,9 @@ public:
 
 	void setNormalColor(COLORREF color);
 	void setHoverColor(COLORREF color);
-	
+
+	void setTextColor(COLORREF color);
+	void setTextFont(const std::wstring& fontName);
+	void setTextSize(int height, int width = 0);
 };
 

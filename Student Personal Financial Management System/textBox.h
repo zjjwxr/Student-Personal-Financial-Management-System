@@ -3,7 +3,7 @@
 #include "Configure.h"
 #include <string>
 #include <ctime>
-class textBox :
+class TextBox :
     public BasicWidget {
 private:
     std::wstring m_text;
@@ -14,7 +14,7 @@ private:
 	COLORREF m_clickColor = RGB(255, 0, 0);
     COLORREF m_currentColor = WHITE;
 public:
-    textBox(int x=0, int y=0, int w=0, int h=0, bool isPassword = false);
+    TextBox(int x=0, int y=0, int w=0, int h=0, bool isPassword = false);
     void show()override;
     void eventLoop(const ExMessage& msg);
 };

@@ -3,7 +3,7 @@
 
 int main() {
 	Window w(960, 640, EX_SHOWCONSOLE );
-	w.setWindowTitle(L"学生个人财务管理系统");
+	w.setWindowTitle(_T("学生个人财务管理系统"));
 
 	Management m;
 	m.run();

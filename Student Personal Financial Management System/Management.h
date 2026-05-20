@@ -1,7 +1,7 @@
 #pragma once
 #include "Configure.h"
 #include "Button.h"
-#include "textBox.h"
+#include "TextBox.h"
 #include "Window.h"
 #include <vector>
 class Management {
@@ -19,6 +19,6 @@ private:
 	inline static ExMessage m_msg;
 
 	std::vector<Button*> login_Buttons;
-	std::vector<textBox*>login_textBoxes;
+	std::vector<TextBox*>login_TextBoxes;
 };
 

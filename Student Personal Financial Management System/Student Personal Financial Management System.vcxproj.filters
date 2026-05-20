@@ -16,6 +16,9 @@
     <Filter Include="头文件\easyxTools">
       <UniqueIdentifier>{4b8beb69-84fe-4ecc-a670-5594d5fb9189}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\easyxTools">
+      <UniqueIdentifier>{87563867-57e4-4c10-a711-253c9b3a4d0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -25,23 +28,23 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\easyxTools</Filter>
     </ClCompile>
     <ClCompile Include="BasicWidget.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\easyxTools</Filter>
     </ClCompile>
-    <ClCompile Include="textBox.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>源文件\easyxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>源文件\easyxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>源文件\easyxTools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Configure.h">
@@ -53,8 +56,14 @@
     <ClInclude Include="BasicWidget.h">
       <Filter>头文件\easyxTools</Filter>
     </ClInclude>
-    <ClInclude Include="textBox.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Button.h">
+      <Filter>头文件\easyxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>头文件\easyxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>头文件\easyxTools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

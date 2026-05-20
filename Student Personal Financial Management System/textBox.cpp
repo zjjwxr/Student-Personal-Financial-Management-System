@@ -1,12 +1,12 @@
-#include "textBox.h"
+#include "TextBox.h"
 
-textBox::textBox(int x, int y, int w, int h, bool isPassword) : BasicWidget(x, y, w, h), isPassword(isPassword) {}
+TextBox::TextBox(int x, int y, int w, int h, bool isPassword) : BasicWidget(x, y, w, h), isPassword(isPassword) {}
 
-void textBox::show() {
+void TextBox::show() {
 	::setfillcolor(m_currentColor);
 	::fillroundrect(m_x, m_y, m_x + m_w, m_y + m_h, 10, 10);
 
-	std::wstring displayText = isPassword ? std::wstring(m_text.size(), L'*') : m_text;
+	std::wstring displayText = isPassword ? std::wstring(m_text.size(), _T('*')) : m_text;
 
 	::settextcolor(BLACK);
 	int tx = m_x + 5;
@@ -14,7 +14,7 @@ void textBox::show() {
 	outtextxy(tx, ty, displayText.c_str());
 }
 
-void textBox::eventLoop(const ExMessage& msg) {
+void TextBox::eventLoop(const ExMessage& msg) {
 	m_msg = msg;
 	if (m_msg.message == WM_LBUTTONDOWN) {
 		if (isHover()) {

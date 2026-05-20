@@ -131,7 +131,8 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Management.cpp" />
-    <ClCompile Include="textBox.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +140,8 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Configure.h" />
     <ClInclude Include="Management.h" />
-    <ClInclude Include="textBox.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
