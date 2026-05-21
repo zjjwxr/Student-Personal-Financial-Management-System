@@ -9,6 +9,7 @@ void Button::show() {
 	int tx = m_x + (m_w - ::textwidth(m_text.getText().c_str())) / 2; 
 	int ty = m_y + (m_h - ::textheight(m_text.getText().c_str())) / 2;
 
+	m_text.setPosition(tx, ty);
 	m_text.show();
 }
 

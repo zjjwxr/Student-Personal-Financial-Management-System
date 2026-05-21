@@ -6,12 +6,18 @@ void TextBox::show() {
 	::setfillcolor(m_currentColor);
 	::fillroundrect(m_x, m_y, m_x + m_w, m_y + m_h, 10, 10);
 
-	std::wstring displayText = isPassword ? std::wstring(m_text.size(), _T('*')) : m_text;
+	Text displayText = m_text;
+	if (isPassword) {
+		std::wstring temp(m_text.getText().size() - 1, L'*');
+		temp += m_text.getText().back(); // 显示最后一个字符
+		displayText.setText(temp);
+	}
 
-	::settextcolor(BLACK);
 	int tx = m_x + 5;
-	int ty = m_y + (m_h - ::textheight(displayText.c_str())) / 2;
-	outtextxy(tx, ty, displayText.c_str());
+	int ty = m_y + (m_h - ::textheight(displayText.getText().c_str())) / 2;
+	
+	displayText.setPosition(tx, ty);
+	displayText.show();
 }
 
 void TextBox::eventLoop(const ExMessage& msg) {
@@ -32,13 +38,28 @@ void TextBox::eventLoop(const ExMessage& msg) {
 	if (msg.message == WM_CHAR) {
 		wchar_t ch = (wchar_t)msg.ch;
 		if (ch >= 32 && ch != 127) {
-			m_text.push_back(ch);
+			std::wstring temp = m_text.getText();
+			temp += ch;
+			m_text.setText(temp);
 		}
 	}
 	if (msg.message == WM_KEYDOWN) {
-		if (msg.vkcode == VK_BACK && !m_text.empty()) {
-			m_text.pop_back();
+		if (msg.vkcode == VK_BACK && !m_text.getText().empty()) {
+			std::wstring temp = m_text.getText();
+			temp.pop_back();
+			m_text.setText(temp);
 		}
 	}
 }
 
+void TextBox::setTextColor(COLORREF color) {
+	m_text.setColor(color);
+}
+
+void TextBox::setTextFont(const std::wstring& fontName) {
+	m_text.setFont(fontName);
+}
+
+void TextBox::setTextSize(int height, int width) {
+	m_text.setFixedSize(height, width);
+}
