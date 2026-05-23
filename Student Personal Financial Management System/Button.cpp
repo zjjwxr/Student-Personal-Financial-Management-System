@@ -21,14 +21,14 @@ void Button::eventLoop(const ExMessage& msg) {
 		return;
 	}
 	if (isClicked()) {
-		m_currentColor = m_normalColor;
+		m_currentColor = m_defaultColor;
 		return;
 	}
 	return;
 }
 
-void Button::setNormalColor(COLORREF color) {
-	m_normalColor = color;
+void Button::setDefaultColor(COLORREF color) {
+	m_defaultColor = color;
 }
 
 void Button::setHoverColor(COLORREF color) {
