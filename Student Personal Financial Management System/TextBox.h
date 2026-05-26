@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "BasicWidget.h"
 #include "Configure.h"
 #include "Text.h"
@@ -27,6 +27,9 @@ public:
     void setTextColor(COLORREF color);
     void setTextFont(const std::wstring& fontName);
     void setTextSize(int height, int width = 0);
+    std::wstring getText() {
+        return m_text.getText();
+    }
 
 private:
     void drawCaret();  // 绘制插入符
@@ -36,5 +39,6 @@ private:
     void moveCaretRight();  // 插入符右移
     void insertCharacter(wchar_t ch);  // 插入字符
     void deleteCharacter();  // 删除字符
+   
 };
 

@@ -42,6 +42,12 @@
     <ClCompile Include="Text.cpp">
       <Filter>源文件\easyxTools</Filter>
     </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">
@@ -64,6 +70,12 @@
     </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>头文件\easyxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

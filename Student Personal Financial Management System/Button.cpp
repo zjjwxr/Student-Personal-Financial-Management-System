@@ -1,4 +1,4 @@
-#include "Button.h"
+﻿#include "Button.h"
 
 Button::Button(const std::wstring& text,int x, int y, int w, int h) :BasicWidget(x,y,w,h),m_text(text){}
 
@@ -18,7 +18,10 @@ void Button::eventLoop(const ExMessage& msg) {
 	m_msg = msg;
 	if (isHover()) {
 		m_currentColor = m_hoverColor;
-		return;
+		
+	}
+	else {
+		m_currentColor = m_defaultColor;  //离开变回原色
 	}
 	if (isClicked()) {
 		m_currentColor = m_defaultColor;

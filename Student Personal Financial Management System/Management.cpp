@@ -1,4 +1,4 @@
-#include "Management.h"
+﻿#include "Management.h"
 
 Management::Management() {
 	::loadimage(&m_background, _T("./images/background.png"), Window::width(), Window::height());
@@ -13,11 +13,28 @@ Management::Management() {
 		int login_tby = (Window::height() - 4 * 60) / 2 + (2 * i + 1) * 60;
 		login_TextBoxes[i]->setPosition(login_tbx,login_tby);
 	}
+	//加载数据
+	m_user.loadFromFile();
 
+	//登录和注册按钮
+	int btnW = 180, btnH = 60;
+	int btnY = login_TextBoxes[1]->getY() + login_TextBoxes[1]->getHeight() + 40;
+	int cx = Window::width() / 2;
+
+	Button* loginBtn = new Button(_T("登录"), cx - btnW - 20, btnY, btnW, btnH);
+	Button* regBtn = new Button(_T("注册"), cx + 20, btnY, btnW, btnH);
+
+	loginBtn->setDefaultColor(RGB(77, 77, 77));
+	loginBtn->setHoverColor(RGB(0, 180, 0));
+	regBtn->setDefaultColor(RGB(77, 77, 77));
+	regBtn->setHoverColor(RGB(0, 120, 255));
+
+	login_Buttons.push_back(loginBtn);
+	login_Buttons.push_back(regBtn);
 }
 
 void Management::run() {
-	int currentState = LOGIN;
+	currentState = LOGIN;
 	Window::beginDraw();
 	while (true) {
 		Window::clear();
@@ -54,11 +71,78 @@ void Management::login() {
 	//	btn->show();
 	//	btn->eventLoop(m_msg);
 	//}
-	for(auto&btx:login_TextBoxes){
+	for (auto& btx : login_TextBoxes) {
 		btx->eventLoop(m_msg);
 		btx->show();
 	}
-}
+
+
+
+	
+
+	for (auto& btn : login_Buttons) {
+		btn->eventLoop(m_msg);
+		btn->show();
+	}
+
+
+	
+
+
+
+
+	//登录和注册逻辑
+	
+
+		// 错误提示
+		::settextstyle(26, 0, _T("微软雅黑"));
+		int msgY = login_TextBoxes[1]->getY() + login_TextBoxes[1]->getHeight() + 110;
+		if (m_loginError == 1) {
+			settextcolor(RGB(255, 100, 100));
+			::outtextxy(Window::width() / 2 - 80, msgY, _T("密码错误！"));
+		}
+		else if (m_loginError == 2) {
+			settextcolor(RGB(255, 100, 100));
+			::outtextxy(Window::width() / 2 - 200, msgY,
+				_T("注册失败！用户名3-20位，密码至少6位"));
+		}
+		//登录
+		if (login_Buttons[0]->isClicked()) {
+			std::wstring uname = login_TextBoxes[0]->getText();
+			std::wstring pwd = login_TextBoxes[1]->getText();
+			if (m_user.login(uname, pwd)) {
+				
+				m_loginError = 0;
+				currentState = MENU;
+			}
+			else {
+				m_loginError = 1;
+			}
+		}
+
+
+		//注册
+		if (login_Buttons[1]->isClicked()) {
+			std::wstring uname = login_TextBoxes[0]->getText();
+			std::wstring pwd = login_TextBoxes[1]->getText();
+			if (m_user.registerUser(uname, pwd)) {
+				m_user.saveToFile();
+				m_user.login(uname, pwd);
+				
+				m_loginError = 0;
+				currentState = MENU;
+			}
+			else {
+				m_loginError = 2;
+			}
+		}
+
+
+
+	}
+
+
 
 void Management::menu() {
+
 }
