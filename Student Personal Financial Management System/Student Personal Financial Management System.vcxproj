@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Account.cpp" />
     <ClCompile Include="BasicWidget.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="FileManager.cpp" />
@@ -134,10 +135,12 @@
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextBox.cpp" />
+    <ClCompile Include="Transaction.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Account.h" />
     <ClInclude Include="BasicWidget.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Configure.h" />
@@ -145,6 +148,7 @@
     <ClInclude Include="Management.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextBox.h" />
+    <ClInclude Include="Transaction.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

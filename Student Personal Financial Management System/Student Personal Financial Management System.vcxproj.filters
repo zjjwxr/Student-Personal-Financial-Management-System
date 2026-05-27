@@ -48,6 +48,12 @@
     <ClCompile Include="FileManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Transaction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Account.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">
@@ -75,6 +81,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FileManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Account.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
