@@ -8,15 +8,26 @@
 class Management {
 	enum State {
 		LOGIN,
-		MENU
+		REGISTERUSER,
+		MENU,
+		ACCOUNT,
+		TRANSACTION,
+		TABLE,
+		SETTING,
+		EXIT
 	};
 public:
 	Management();
 	void run();// 运行系统
 	void login(); // 登录系统
-	void menu(); //目录界面
+	void registerUser();// 注册账号
+	void menu(); //首页
+	void account();
+	void transaction();
+	void table();
+	void setting();
 private:
-	State currentState;
+	State currentState=LOGIN;
 	IMAGE m_background;
 	inline static ExMessage m_msg;
 
