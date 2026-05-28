@@ -59,9 +59,10 @@ void Transaction::display() const {                       //待完善
 }
 
 std::wstring Transaction::getDateString() const {
-    struct tm* timeinfo = localtime(&date);
+    struct tm timeinfo;
+    localtime_s(&timeinfo, &date);
     wchar_t buffer[80];
-    wcsftime(buffer, sizeof(buffer), L"%Y-%m-%d %H:%M:%S", timeinfo);
+    wcsftime(buffer, sizeof(buffer), L"%Y-%m-%d %H:%M:%S", &timeinfo);
     return std::wstring(buffer);
 }
 
@@ -125,8 +126,9 @@ std::vector<Transaction> TransactionManager::getTransactionsByMonth(int year, in
     std::vector<Transaction> result;
     for (const auto& trans : transactions) {
         time_t date = trans.getDate();
-        struct tm* timeinfo = localtime(&date);
-        if (timeinfo->tm_year + 1900 == year && timeinfo->tm_mon + 1 == month) {
+        struct tm timeinfo;
+        localtime_s(&timeinfo, &date);
+        if (timeinfo.tm_year + 1900 == year && timeinfo.tm_mon + 1 == month) {
             result.push_back(trans);
         }
     }
