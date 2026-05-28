@@ -47,8 +47,23 @@ void Management::run() {
 		case LOGIN:
 			login();
 			break;
+		case REGISTERUSER:
+			registerUser();
+			break;
 		case MENU:
 			menu();
+			break;
+		case ACCOUNT:
+			account();
+			break;
+		case TRANSACTION:
+			transaction();
+			break;
+		case TABLE:
+			table();
+			break;
+		case SETTING:
+			setting();
 			break;
 		default:
 			exit(0);
@@ -141,8 +156,28 @@ void Management::login() {
 
 	}
 
+void Management::registerUser() {
+	currentState = EXIT;
+}
+
 
 
 void Management::menu() {
+	currentState = EXIT;
+}
 
+void Management::account() {
+	currentState = EXIT;
+}
+
+void Management::transaction() {
+	currentState = EXIT;
+}
+
+void Management::table() {
+	currentState = EXIT;
+}
+
+void Management::setting() {
+	currentState = EXIT;
 }
