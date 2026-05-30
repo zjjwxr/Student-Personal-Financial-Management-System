@@ -12,41 +12,29 @@ int main() {
 }
 
 
-//#include <easyx.h>
+//测试user
+
+//#include <iostream>
+//#include "User.h"
+//#include "FileManager.h"
 //#include <string>
+//using namespace std;
 //
 //int main() {
-//    initgraph(400, 300);
-//    setbkmode(TRANSPARENT);
-//    settextstyle(20, 0, L"微软雅黑");
-//
-//    std::wstring text = L"";
-//    ExMessage msg;  // ✅ 用来接收消息
-//
-//    BeginBatchDraw();
-//    while (true) {
-//        cleardevice();
-//
-//        // ✅ peekmessage 直接拿到消息，不要再用 getmessage
-//        while (peekmessage(&msg, EX_KEY | EX_CHAR)) {
-//            if (msg.message == WM_CHAR) {
-//                wchar_t ch = (wchar_t)msg.ch;
-//                if (ch >= 32 && ch != 127) {
-//                    text.push_back(ch);
-//                }
-//            }
-//            if (msg.message == WM_KEYDOWN) {
-//                if (msg.vkcode == VK_BACK && !text.empty()) {
-//                    text.pop_back();
-//                }
-//            }
-//        }
-//
-//        outtextxy(10, 10, text.c_str());
-//        FlushBatchDraw();
-//    }
-//
-//    EndBatchDraw();
-//    closegraph();
-//    return 0;
+//	wstring username, password;
+//	while (wcin >> username >> password) {
+//		User tempUser(username, password);
+//		if (tempUser.loginUser()) {
+//			wcout << L"success login" << endl;
+//		}
+//		else {
+//			if (tempUser.addUser()) {
+//				wcout << L"successfully add" << endl;
+//			}
+//			else {
+//				wcout << L"failed to add" << endl;
+//			}
+//		}
+//	}
 //}
+

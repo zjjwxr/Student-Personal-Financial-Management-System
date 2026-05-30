@@ -5,6 +5,20 @@
 
 FileManager::FileManager() {}
 
+std::wstring FileManager::getUsersFilePath() {
+    return L"./data/Users.dat";
+}
+
+std::wstring FileManager::getUserAccountsFilePath(const std::wstring& username) {
+    return L"./data/" + username + L"/Accounts.dat";
+}
+
+std::wstring FileManager::getUserTransactionsFilePath(const std::wstring& username) {
+    return L"./data/" + username + L"/Transactions.dat";
+}
+
+
+
 // 判断文件是否存在
 bool FileManager::fileExists(const std::wstring& filename) {
     std::wifstream file(filename);
@@ -18,10 +32,10 @@ bool FileManager::createDirectory(const std::wstring& path) {
 
 // 写文件（覆盖）
 bool FileManager::writeTextToFile(const std::wstring& filename, const std::wstring& content) {
-    std::wofstream outFile(filename);
-    if (!outFile.is_open()) return false;
-    outFile << content;
-    outFile.close();
+    std::wofstream ofs(filename);
+    if (!ofs.is_open()) return false;
+    ofs << content;
+    ofs.close();
     return true;
 }
 
@@ -37,10 +51,10 @@ std::wstring FileManager::readTextFromFile(const std::wstring& filename) {
 
 // 追加写文件
 bool FileManager::appendTextToFile(const std::wstring& filename, const std::wstring& content) {
-    std::wofstream outFile(filename, std::ios::app);
-    if (!outFile.is_open()) return false;
-    outFile << content;
-    outFile.close();
+    std::wofstream ofs(filename, std::ios::app);
+    if (!ofs.is_open()) return false;
+    ofs << content;
+    ofs .close();
     return true;
 }
 

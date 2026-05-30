@@ -1,10 +1,14 @@
-﻿
-#pragma once
+﻿#pragma once
+#include "User.h"
 #include <string>
 
 class FileManager {
 public:
     FileManager();
+
+    static std::wstring getUsersFilePath();
+    static std::wstring getUserAccountsFilePath(const std::wstring& username);
+    static std::wstring getUserTransactionsFilePath(const std::wstring& username);
 
     static bool fileExists(const std::wstring& filename);
     static bool createDirectory(const std::wstring& path);
