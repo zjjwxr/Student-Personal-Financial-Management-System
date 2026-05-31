@@ -4,8 +4,8 @@
 #include <fstream>
 #include <sstream>
 
-User::User(std::wstring nickname, std::wstring username, std::wstring password)
-	: m_nickname(nickname), m_username(username), m_password(password) {
+User::User(std::wstring realname, std::wstring username, std::wstring password)
+	: m_realname(realname), m_username(username), m_password(password) {
 }
 
 bool User::loginUser() {
@@ -34,6 +34,6 @@ bool User::loginUser() {
 }
 
 bool User::addUser() {
-	std::wstring content = m_nickname+L'|'+m_username + L'|' + m_password + L'\n';
+	std::wstring content = m_realname+L'|'+m_username + L'|' + m_password + L'\n';
 	return FileManager::appendTextToFile(FileManager::getUsersFilePath(), content);
 }

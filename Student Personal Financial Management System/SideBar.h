@@ -10,7 +10,7 @@ class SideBar :
 private:
     User* m_user;
     std::vector<Button*> m_buttons;
-    Text* m_usernameText;
+    Text* m_realnameText;
 public:
     SideBar(User* user, int x = 0, int y = 0, int w = 180, int h = 640);
     void eventLoop(const ExMessage& msg);

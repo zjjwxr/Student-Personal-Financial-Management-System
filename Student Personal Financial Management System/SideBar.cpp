@@ -9,11 +9,11 @@ SideBar::SideBar(User* user, int x, int y, int w, int h):m_user(user),BasicWidge
 	for (auto button : m_buttons) {
 		button->setHoverColor(RGB(46, 125, 255));
 	}
-	m_usernameText = new Text(m_user->getNickname());
-	m_usernameText->setFixedSize(40);
-	int tx = (m_w - ::textwidth(m_usernameText->getText().c_str())) / 2;
-	int ty = (100 - ::textheight(m_usernameText->getText().c_str())) / 2;
-	m_usernameText->setPosition(tx, ty);
+	m_realnameText = new Text(m_user->getRealname());
+	m_realnameText->setFixedSize(40);
+	int tx = (m_w - ::textwidth(m_realnameText->getText().c_str())) / 2;
+	int ty = (100 - ::textheight(m_realnameText->getText().c_str())) / 2;
+	m_realnameText->setPosition(tx, ty);
 }
 
 void SideBar::eventLoop(const ExMessage& msg) {
@@ -27,7 +27,7 @@ void SideBar::show() {
 	setfillcolor(WHITE);
 	//setcolor(BLACK);
 	solidrectangle(m_x, m_y, m_w, m_y + m_h);
-	m_usernameText->show();
+	m_realnameText->show();
 	for (auto button : m_buttons) {
 		button->show();
 	}
@@ -37,6 +37,6 @@ SideBar::~SideBar() {
 	for (auto button : m_buttons) {
 		delete button;
 	}
-	delete m_usernameText;
+	delete m_realnameText;
 	delete m_user;
 }
