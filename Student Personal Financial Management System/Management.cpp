@@ -36,7 +36,7 @@ Management::Management() {
 }
 
 void Management::run() {
-	currentState = LOGIN;
+	currentState = MENU;
 	Window::beginDraw();
 	while (true) {
 		Window::clear();
@@ -153,7 +153,7 @@ void Management::login() {
 
 	//重新自己好好写一下吧哥。一次肯定只有一个User啊，你用map是何意呢？你甚至把这样逻辑都写出来了，每次都创建一个
 	//tempUser对象用TextBox里的输入来初始化就行了。
-	//再用一个全局变量记录一下登录的currentUser就ok了
+	//再用一个全局变量或者成员记录一下登录的currentUser就ok了
 }
 
 void Management::registerUser() {
@@ -163,7 +163,12 @@ void Management::registerUser() {
 
 
 void Management::menu() {
-	currentState = EXIT;
+	User temp(L"张三");
+	if (m_sideBar == nullptr) {
+		m_sideBar = new SideBar(&temp);
+	}
+	m_sideBar->eventLoop(m_msg);
+	m_sideBar->show();
 }
 
 void Management::account() {

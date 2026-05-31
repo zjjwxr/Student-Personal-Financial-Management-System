@@ -21,9 +21,9 @@ int main() {
 //using namespace std;
 //
 //int main() {
-//	wstring username, password;
-//	while (wcin >> username >> password) {
-//		User tempUser(username, password);
+//	wstring nickname,username, password;
+//	while (wcin >> nickname>>username >> password) {
+//		User tempUser(nickname,username, password);
 //		if (tempUser.loginUser()) {
 //			wcout << L"success login" << endl;
 //		}

@@ -15,6 +15,7 @@ public:
     void eventLoop(const ExMessage& msg);
 
 	std::wstring getText() const { return m_text; }
+    int getTextHeight() const { return m_h; }
 	void setText(const std::wstring& text) { m_text = text; }
 
     void setColor(COLORREF color);

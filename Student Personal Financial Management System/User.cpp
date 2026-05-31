@@ -4,7 +4,8 @@
 #include <fstream>
 #include <sstream>
 
-User::User(std::wstring username, std::wstring password): m_username(username),m_password(password){
+User::User(std::wstring nickname, std::wstring username, std::wstring password)
+	: m_nickname(nickname), m_username(username), m_password(password) {
 }
 
 bool User::loginUser() {
@@ -16,10 +17,11 @@ bool User::loginUser() {
 	}
 	std::wstring singleUserMessage;
 	while (std::getline(ifs, singleUserMessage)) {
-		int partitionPos = singleUserMessage.find(L'|');
-		std::wstring temp_userName = singleUserMessage.substr(0, partitionPos);
-		std::wstring temp_password = singleUserMessage.substr(partitionPos + 1);
-		if (temp_userName == m_username) {
+		int partitionPos1 = singleUserMessage.find(L'|');
+		int partitionPos2 = singleUserMessage.find(L'|', partitionPos1 + 1);
+		std::wstring temp_username = singleUserMessage.substr(partitionPos1 + 1,partitionPos2-partitionPos1-1);
+		std::wstring temp_password = singleUserMessage.substr(partitionPos2 + 1);
+		if (temp_username == m_username) {
 			if (temp_password == m_password) {
 				return true;
 			}
@@ -32,6 +34,6 @@ bool User::loginUser() {
 }
 
 bool User::addUser() {
-	std::wstring content = m_username + L'|' + m_password + L'\n';
+	std::wstring content = m_nickname+L'|'+m_username + L'|' + m_password + L'\n';
 	return FileManager::appendTextToFile(FileManager::getUsersFilePath(), content);
 }

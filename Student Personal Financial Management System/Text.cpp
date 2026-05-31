@@ -3,6 +3,7 @@
 Text::Text(const std::wstring& text, int x, int y, int w, int h) : BasicWidget(x, y, w, h), m_text(text) {}
 
 void Text::show() {
+	::settextstyle(m_h, m_w, m_fontName);
 	::settextcolor(m_color);
 	::outtextxy(m_x, m_y, m_text.c_str());
 }

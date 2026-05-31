@@ -4,6 +4,7 @@
 #include "TextBox.h"
 #include "Window.h"
 #include "User.h"
+#include "SideBar.h"
 #include <vector>
 class Management {
 	enum State {
@@ -37,5 +38,7 @@ private:
 	//用于用户登录
 	User m_user;
 	int m_loginError = 0;
+
+	SideBar* m_sideBar;
 };
 
