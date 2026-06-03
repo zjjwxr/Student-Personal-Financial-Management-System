@@ -5,6 +5,7 @@
 #include "Window.h"
 #include "User.h"
 #include "SideBar.h"
+#include "TopBar.h"
 #include <vector>
 class Management {
 	enum State {
@@ -40,5 +41,6 @@ private:
 	int m_loginError = 0;
 
 	SideBar* m_sideBar;
+	TopBar* m_topBar;
 };
 

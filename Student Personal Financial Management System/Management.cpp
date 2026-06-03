@@ -302,12 +302,16 @@ void Management::registerUser() {
 
 
 void Management::menu() {
+	if (m_topBar == nullptr) {
+		m_topBar = new TopBar(L"概况");
+	}
 	User temp(L"张三");
 	if (m_sideBar == nullptr) {
 		m_sideBar = new SideBar(&temp);
 	}
 	m_sideBar->eventLoop(m_msg);
 	m_sideBar->show();
+	m_topBar->show();
 }
 
 void Management::account() {

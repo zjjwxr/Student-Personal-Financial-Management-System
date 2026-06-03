@@ -136,6 +136,7 @@
     <ClCompile Include="SideBar.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextBox.cpp" />
+    <ClCompile Include="TopBar.cpp" />
     <ClCompile Include="Transaction.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="SideBar.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextBox.h" />
+    <ClInclude Include="TopBar.h" />
     <ClInclude Include="Transaction.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="Window.h" />
