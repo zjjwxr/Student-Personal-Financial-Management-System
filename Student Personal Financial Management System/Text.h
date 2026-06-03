@@ -8,12 +8,12 @@ private:
     COLORREF m_color = BLACK;
     COLORREF m_defaultColor = BLACK;
 	COLORREF m_hoverColor = RGB(77, 77, 77); 
-	LPCTSTR m_fontName = _T("微软雅黑");
+    LOGFONT m_lf{};
 public:
     Text(const std::wstring& text=_T(""),int x = 0, int y = 0, int w = 0, int h = 20);
     void show()override;
     void eventLoop(const ExMessage& msg);
-
+    
 	std::wstring getText() const { return m_text; }
     int getTextHeight() const { return m_h; }
 	void setText(const std::wstring& text) { m_text = text; }

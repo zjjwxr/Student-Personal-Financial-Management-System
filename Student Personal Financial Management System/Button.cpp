@@ -5,7 +5,7 @@ Button::Button(const std::wstring& text,int x, int y, int w, int h,int elipseWid
 
 void Button::show() {
 	::setfillcolor(m_currentColor);
-	::fillroundrect(m_x, m_y, m_x + m_w, m_y + m_h, m_elipseWidth, m_elipseHeight);//最后两个参数是圆角的宽和高，可以根据需要调整
+	::solidroundrect(m_x, m_y, m_x + m_w, m_y + m_h, m_elipseWidth, m_elipseHeight);//最后两个参数是圆角的宽和高，可以根据需要调整
 
 	m_text.setFixedSize(m_text.getTextHeight());
 	int tx = m_x + (m_w - ::textwidth(m_text.getText().c_str())) / 2; 
