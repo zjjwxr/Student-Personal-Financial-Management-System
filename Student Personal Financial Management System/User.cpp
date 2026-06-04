@@ -8,6 +8,25 @@ User::User(std::wstring realname, std::wstring username, std::wstring password)
 	: m_realname(realname), m_username(username), m_password(password) {
 }
 
+bool User::findUser() {
+	std::wifstream ifs;
+	ifs.open(FileManager::getUsersFilePath());
+	if (!ifs.is_open()) {
+		std::wcout << L"Users.dat could't be opened!\n";
+		return false;
+	}
+	std::wstring singleUserMessage;
+	while (std::getline(ifs, singleUserMessage)) {
+		int partitionPos1 = singleUserMessage.find(L'|');
+		int partitionPos2 = singleUserMessage.find(L'|', partitionPos1 + 1);
+		std::wstring temp_username = singleUserMessage.substr(partitionPos1 + 1, partitionPos2 - partitionPos1 - 1);
+		if (temp_username == m_username) {
+			return true;
+		}
+	}
+	return false;
+}
+
 bool User::loginUser() {
 	std::wifstream ifs;
 	ifs.open(FileManager::getUsersFilePath());
@@ -34,6 +53,39 @@ bool User::loginUser() {
 }
 
 bool User::addUser() {
+	if (FileManager::createDirectory(FileManager::getUserDataDirectory(m_username)));//可能缺一个警告
 	std::wstring content = m_realname+L'|'+m_username + L'|' + m_password + L'\n';
 	return FileManager::appendTextToFile(FileManager::getUsersFilePath(), content);
+}
+
+void User::loadAccounts() {
+	std::wstring data=FileManager::readTextFromFile(FileManager::getUserAccountsFilePath(m_username));
+	std::wstringstream allData(data);
+	std::wstring dataLine;
+	std::wstringstream singleData;
+	while (std::getline(allData,dataLine)) {
+		for (auto& ch : dataLine) {
+			if (ch == L'|')ch = L' ';
+		}
+		singleData.str(dataLine);
+		std::wstring accountName;
+		double balance;
+		singleData >> accountName >> balance;
+		m_accounts.push_back(new Account(this, accountName, balance));
+		singleData.clear();
+	}
+}
+
+void User::loadTransactions() {
+}
+
+void User::saveAccounts() {
+	std::wstring data;
+	for (Account* account : m_accounts) {
+		data += account->getAccountName() + L'|' + std::to_wstring(account->getBalance()) + L'\n';
+	}
+	FileManager::writeTextToFile(FileManager::getUserAccountsFilePath(m_username), data);
+}
+
+void User::saveTransactions() {
 }

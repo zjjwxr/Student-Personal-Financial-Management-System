@@ -12,6 +12,7 @@ private:
 public:
     Text(const std::wstring& text=_T(""),int x = 0, int y = 0, int w = 0, int h = 20);
     void show()override;
+    bool isHover();
     void eventLoop(const ExMessage& msg);
     
 	std::wstring getText() const { return m_text; }

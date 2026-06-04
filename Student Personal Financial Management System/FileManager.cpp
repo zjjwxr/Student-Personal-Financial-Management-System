@@ -9,6 +9,10 @@ std::wstring FileManager::getUsersFilePath() {
     return L"./data/Users.dat";
 }
 
+std::wstring FileManager::getUserDataDirectory(const std::wstring& username) {
+    return L"./data/"+username;
+}
+
 std::wstring FileManager::getUserAccountsFilePath(const std::wstring& username) {
     return L"./data/" + username + L"/Accounts.dat";
 }
@@ -63,8 +67,4 @@ bool FileManager::deleteFile(const std::wstring& filename) {
     return DeleteFileW(filename.c_str()) != 0;
 }
 
-// 获取数据文件夹路径
-std::wstring FileManager::getDataDirectory() {
-    return L"./data/";
-}
 

@@ -60,6 +60,9 @@
     <ClCompile Include="TopBar.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MoneyCard.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">
@@ -99,6 +102,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TopBar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MoneyCard.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

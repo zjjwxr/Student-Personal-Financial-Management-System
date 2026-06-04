@@ -32,6 +32,14 @@ void TopBar::updateTime() {
 	wchar_t buffer[64]; 
 	wcsftime(buffer, sizeof(buffer) / sizeof(wchar_t), L"%Y年%m月%d日",&t_info);
 	std::wstring timeStr(buffer);
+	for (size_t i = 0; i < timeStr.size() - 1; ) {
+		if (timeStr[i] == L'年' && timeStr[i + 1] == L'0')
+			timeStr.erase(i + 1, 1);
+		else if (timeStr[i] == L'月' && timeStr[i + 1] == L'0')
+			timeStr.erase(i + 1, 1);
+		else
+			i++;
+	}
 	m_time->setText(timeStr);
 }
 

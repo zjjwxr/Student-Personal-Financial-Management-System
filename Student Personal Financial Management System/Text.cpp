@@ -17,6 +17,13 @@ void Text::show() {
 	::outtextxy(m_x, m_y, m_text.c_str());
 }
 
+bool Text::isHover(){
+	if(m_msg.x>=m_x&& m_msg.x <= m_x + ::textwidth(m_text.c_str()) && m_msg.y >= m_y && m_msg.y <= m_y + m_h) {//鼠标位置在按钮范围内
+		return true;
+	}
+	return false;
+}
+
 void Text::eventLoop(const ExMessage& msg) {
 	m_msg = msg;
 	if (isHover()) {

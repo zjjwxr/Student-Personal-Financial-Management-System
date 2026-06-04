@@ -133,6 +133,7 @@
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Management.cpp" />
+    <ClCompile Include="MoneyCard.cpp" />
     <ClCompile Include="SideBar.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextBox.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Configure.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Management.h" />
+    <ClInclude Include="MoneyCard.h" />
     <ClInclude Include="SideBar.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextBox.h" />

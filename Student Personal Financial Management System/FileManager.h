@@ -7,6 +7,7 @@ public:
     FileManager();
 
     static std::wstring getUsersFilePath();
+    static std::wstring getUserDataDirectory(const std::wstring& username);
     static std::wstring getUserAccountsFilePath(const std::wstring& username);
     static std::wstring getUserTransactionsFilePath(const std::wstring& username);
 
@@ -16,7 +17,4 @@ public:
     static std::wstring readTextFromFile(const std::wstring& filename);
     static bool appendTextToFile(const std::wstring& filename, const std::wstring& content);
     static bool deleteFile(const std::wstring& filename);
-
-    static std::wstring getDataDirectory();
-
 };
