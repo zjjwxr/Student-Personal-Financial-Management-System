@@ -1,5 +1,6 @@
 ﻿#include "Account.h"
 #include "FileManager.h"
+#include "User.h"
 #include <fstream>
 #include <sstream>
 #include <iomanip>

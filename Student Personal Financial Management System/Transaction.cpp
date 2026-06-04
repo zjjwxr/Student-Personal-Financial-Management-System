@@ -180,75 +180,75 @@ double TransactionManager::getTotalIncomeByDateRange(time_t startDate, time_t en
 void TransactionManager::displayAllTransactions() const {                           //待完善
 }
 
-bool TransactionManager::saveToFile() const {
-    std::wstring filepath = FileManager::getDataDirectory() + L"transactions.dat";
-    std::wstring content;
+//bool TransactionManager::saveToFile() const {
+    //std::wstring filepath = FileManager::getDataDirectory() + L"transactions.dat";
+    //std::wstring content;
 
     // 写入数量
-    content += std::to_wstring(transactions.size()) + L"\n";
+    //content += std::to_wstring(transactions.size()) + L"\n";
 
-    for (const auto& trans : transactions) {
-        content += std::to_wstring(trans.getId()) + L"|"
-            + std::to_wstring(static_cast<int>(trans.getType())) + L"|"
-            + trans.getCategory() + L"|"
-            + trans.getSubCategory() + L"|"
-            + std::to_wstring(trans.getAmount()) + L"|"
-            + trans.getDescription() + L"|"
-            + trans.getAccountName() + L"|"
-            + std::to_wstring(trans.getDate()) + L"\n";
-    }
+    //for (const auto& trans : transactions) {
+    //    content += std::to_wstring(trans.getId()) + L"|"
+    //        + std::to_wstring(static_cast<int>(trans.getType())) + L"|"
+    //        + trans.getCategory() + L"|"
+    //        + trans.getSubCategory() + L"|"
+    //        + std::to_wstring(trans.getAmount()) + L"|"
+    //        + trans.getDescription() + L"|"
+    //        + trans.getAccountName() + L"|"
+    //        + std::to_wstring(trans.getDate()) + L"\n";
+    //}
 
-    return FileManager::writeTextToFile(filepath, content);
-}
+    //return FileManager::writeTextToFile(filepath, content);
+//}
 
-bool TransactionManager::loadFromFile() {
-    std::wstring filepath = FileManager::getDataDirectory() + L"transactions.dat";
-    if (!FileManager::fileExists(filepath)) return false;
+//bool TransactionManager::loadFromFile() {
+    //std::wstring filepath = FileManager::getDataDirectory() + L"transactions.dat";
+    //if (!FileManager::fileExists(filepath)) return false;
 
-    std::wstring content = FileManager::readTextFromFile(filepath);
-    std::wstringstream ss(content);
-    std::wstring line;
-
-    transactions.clear();
-    nextId = 1;
-
-    // 读取数量
-    if (!std::getline(ss, line)) return false;
-    int count = std::stoi(line);
-
-    for (int i = 0; i < count; ++i) {
-        if (!std::getline(ss, line)) break;
-        if (line.empty()) continue;
-
-        std::vector<std::wstring> tokens;
-        size_t start = 0;
-        size_t pos;
-        while ((pos = line.find(L'|', start)) != std::wstring::npos) {
-            tokens.push_back(line.substr(start, pos - start));
-            start = pos + 1;
-        }
-        tokens.push_back(line.substr(start));
-
-        if (tokens.size() < 8) continue;
-
-        int id = std::stoi(tokens[0]);
-        int typeInt = std::stoi(tokens[1]);
-        std::wstring category = tokens[2];
-        std::wstring subCategory = tokens[3];
-        double amount = std::stod(tokens[4]);
-        std::wstring description = tokens[5];
-        std::wstring accountName = tokens[6];
-        time_t date = std::stoll(tokens[7]);
-
-        Transaction trans(id, static_cast<TransactionType>(typeInt),
-            category, subCategory, amount,
-            description, accountName, date);
-        transactions.push_back(trans);
-
-        if (id >= nextId) {
-            nextId = id + 1;
-        }
-    }
-
-    return !transactions.empty();
-}
+    //std::wstring content = FileManager::readTextFromFile(filepath);
+//    std::wstringstream ss(content);
+//    std::wstring line;
+//
+//    transactions.clear();
+//    nextId = 1;
+//
+//    // 读取数量
+//    if (!std::getline(ss, line)) return false;
+//    int count = std::stoi(line);
+//
+//    for (int i = 0; i < count; ++i) {
+//        if (!std::getline(ss, line)) break;
+//        if (line.empty()) continue;
+//
+//        std::vector<std::wstring> tokens;
+//        size_t start = 0;
+//        size_t pos;
+//        while ((pos = line.find(L'|', start)) != std::wstring::npos) {
+//            tokens.push_back(line.substr(start, pos - start));
+//            start = pos + 1;
+//        }
+//        tokens.push_back(line.substr(start));
+//
+//        if (tokens.size() < 8) continue;
+//
+//        int id = std::stoi(tokens[0]);
+//        int typeInt = std::stoi(tokens[1]);
+//        std::wstring category = tokens[2];
+//        std::wstring subCategory = tokens[3];
+//        double amount = std::stod(tokens[4]);
+//        std::wstring description = tokens[5];
+//        std::wstring accountName = tokens[6];
+//        time_t date = std::stoll(tokens[7]);
+//
+//        Transaction trans(id, static_cast<TransactionType>(typeInt),
+//            category, subCategory, amount,
+//            description, accountName, date);
+//        transactions.push_back(trans);
+//
+//        if (id >= nextId) {
+//            nextId = id + 1;
+//        }
+//    }
+//
+//    return !transactions.empty();
+//}

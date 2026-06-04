@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include <string>
 #include <vector>
-#include "Account.h"
-#include "Transaction.h"
+
+class Account;
+class Transaction;
 
 class User {
 private:

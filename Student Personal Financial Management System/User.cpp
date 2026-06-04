@@ -1,5 +1,7 @@
 ﻿#include "User.h"
 #include "FileManager.h"
+#include "Account.h"
+#include "Transaction.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>

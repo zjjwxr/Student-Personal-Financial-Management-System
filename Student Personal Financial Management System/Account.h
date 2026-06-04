@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "User.h"
 #include "FileManager.h"
 #include <string>
 #include <vector>
 #include<iostream>
 #include<iomanip>
+class User;
 class Account {
 private:   
     std::wstring m_accountName;   //账户名称
