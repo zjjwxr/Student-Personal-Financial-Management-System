@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "BasicWidget.h"
 #include "Text.h"
 #include "Configure.h"

@@ -131,6 +131,7 @@
     <ClCompile Include="BasicWidget.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="Login_Register.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="MoneyCard.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Configure.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Login_Register.h" />
     <ClInclude Include="Management.h" />
     <ClInclude Include="MoneyCard.h" />
     <ClInclude Include="SideBar.h" />

@@ -38,10 +38,16 @@ bool User::loginUser() {
 	}
 	std::wstring singleUserMessage;
 	while (std::getline(ifs, singleUserMessage)) {
+		if (singleUserMessage.empty()) {
+			continue;
+		}                                                  //跳过空行
 		int partitionPos1 = singleUserMessage.find(L'|');
 		int partitionPos2 = singleUserMessage.find(L'|', partitionPos1 + 1);
 		std::wstring temp_username = singleUserMessage.substr(partitionPos1 + 1,partitionPos2-partitionPos1-1);
 		std::wstring temp_password = singleUserMessage.substr(partitionPos2 + 1);
+		if (temp_username == L"" || temp_password == L"") {
+			continue;                                        //跳过无信息
+		}
 		if (temp_username == m_username) {
 			if (temp_password == m_password) {
 				return true;
@@ -55,7 +61,26 @@ bool User::loginUser() {
 }
 
 bool User::addUser() {
-	if (FileManager::createDirectory(FileManager::getUserDataDirectory(m_username)));//可能缺一个警告
+	std::wifstream ifs;
+	ifs.open(FileManager::getUsersFilePath());
+	if (!ifs.is_open()) {
+		std::wcout << L"Users.dat could't be opened!\n";
+		return false;
+	}
+	std::wstring singleUserMessage;
+	while (std::getline(ifs, singleUserMessage)) {
+		if (singleUserMessage.empty()) {
+			continue;
+		}
+		int partitionPos1 = singleUserMessage.find(L'|');
+		int partitionPos2 = singleUserMessage.find(L'|', partitionPos1 + 1);
+		std::wstring temp_username = singleUserMessage.substr(partitionPos1 + 1, partitionPos2 - partitionPos1 - 1);
+		if (temp_username == m_username) {
+			return false;
+		}
+
+	}
+
 	std::wstring content = m_realname+L'|'+m_username + L'|' + m_password + L'\n';
 	return FileManager::appendTextToFile(FileManager::getUsersFilePath(), content);
 }

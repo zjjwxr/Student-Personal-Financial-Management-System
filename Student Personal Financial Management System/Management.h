@@ -6,6 +6,7 @@
 #include "User.h"
 #include "SideBar.h"
 #include "TopBar.h"
+#include "Login_Register.h"
 #include <vector>
 class Management {
 	enum State {
@@ -33,12 +34,13 @@ private:
 	IMAGE m_background;
 	inline static ExMessage m_msg;
 
-	std::vector<Button*> login_Buttons;
-	std::vector<TextBox*>login_TextBoxes;
+	
 
 	//用于用户登录
+	LoginRegister m_loginRegister;
+
 	User m_user;
-	int m_loginError = 0;
+	
 
 	SideBar* m_sideBar;
 	TopBar* m_topBar;
