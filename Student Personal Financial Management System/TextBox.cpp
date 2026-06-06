@@ -1,4 +1,4 @@
-#include "TextBox.h"
+﻿#include "TextBox.h"
 
 TextBox::TextBox(int x, int y, int w, int h, bool isPassword) : BasicWidget(x, y, w, h), isPassword(isPassword) {}
 
@@ -169,3 +169,7 @@ void TextBox::deleteCharacter() {
 		updateCaretPosition(m_caretPosition - 1);
 	}
 }
+void TextBox::setText(const std::wstring& text) {
+	m_text.setText(text);
+}
+

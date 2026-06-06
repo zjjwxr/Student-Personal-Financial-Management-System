@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <string>
 #include <vector>
-
+#include "Transaction.h"
 class Account;
-class Transaction;
+
+class TransactionManager;
 
 class User {
 private:
@@ -12,6 +13,7 @@ private:
     std::wstring m_password;
     std::vector<Account*> m_accounts;
     std::vector<Transaction*> m_transactions;
+	TransactionManager* m_transactionManager;
 public:
     User(std::wstring realname=L"",std::wstring username = L"", std::wstring password = L"");
 
@@ -27,6 +29,7 @@ public:
     void addTransactionVector(Transaction* transaction) { m_transactions.push_back(transaction); }
     std::vector<Account*> getAccounts() const { return m_accounts; }
     std::vector<Transaction*> getTransactions() const { return m_transactions; }
+	TransactionManager* getTransactionManager() const { return m_transactionManager; }
 
 	void saveAccounts(); //保存账户数据
 	void saveTransactions(); //保存交易数据

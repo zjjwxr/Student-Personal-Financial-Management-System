@@ -23,7 +23,7 @@ public:
     TextBox(int x=0, int y=0, int w=0, int h=0, bool isPassword = false);
     void show()override;
     void eventLoop(const ExMessage& msg);
-
+    void setText(const std::wstring& text);
     void setTextColor(COLORREF color);
     void setTextFont(const std::wstring& fontName);
     void setTextSize(int height, int width = 0);

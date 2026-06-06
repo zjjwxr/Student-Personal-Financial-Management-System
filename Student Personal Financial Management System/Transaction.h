@@ -85,9 +85,9 @@ public:
 
     double getTotalIncomeByDateRange(time_t startDate, time_t endDate) const;                //获取某月的所有收入交易
 
-    void displayAllTransactions() const;                                                   //显示所有交易
+    void displayAllTransactions() const;
 
-    bool saveToFile() const;                                      //保存
+    	bool saveToFile(const std::wstring& filepath) const;
 
-    bool loadFromFile();                                           //加载
+    	bool loadFromFile(const std::wstring& filepath);
 };

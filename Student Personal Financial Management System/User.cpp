@@ -2,12 +2,14 @@
 #include "FileManager.h"
 #include "Account.h"
 #include "Transaction.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
 User::User(std::wstring realname, std::wstring username, std::wstring password)
 	: m_realname(realname), m_username(username), m_password(password) {
+	m_transactionManager = new TransactionManager();
 }
 
 bool User::findUser() {
@@ -104,6 +106,14 @@ void User::loadAccounts() {
 }
 
 void User::loadTransactions() {
+	std::wstring filepath = FileManager::getUserTransactionsFilePath(m_username);
+	if (m_transactionManager->loadFromFile(filepath)) {
+		std::vector<Transaction>& allTrans = m_transactionManager->getAllTransactions();
+		m_transactions.clear();
+		for (auto& trans : allTrans) {
+			m_transactions.push_back(&trans);
+		}
+	}
 }
 
 void User::saveAccounts() {
@@ -115,4 +125,6 @@ void User::saveAccounts() {
 }
 
 void User::saveTransactions() {
+	std::wstring filepath = FileManager::getUserTransactionsFilePath(m_username);
+	m_transactionManager->saveToFile(filepath);
 }

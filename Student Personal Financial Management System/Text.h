@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Configure.h"
 #include "BasicWidget.h"
 class Text :
