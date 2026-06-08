@@ -224,12 +224,19 @@ void LoginRegister::handleLogin(int& currentState) {
             m_loginError = 2;
         }
         else {
-            User user(L"", uname, pwd);
-            if (user.loginUser()) {
+            User* user = new User(L"", uname, pwd);
+            if (user->loginUser()) {
+                // 删除之前的用户对象
+                if (m_currentUser != nullptr) {
+                    delete m_currentUser;
+                }
+                m_currentUser = user;  // 保存新创建的用户对象
                 m_loginError = 0;
                 currentState = 2;
             }
             else {
+                // 登录失败，删除临时创建的对象
+                delete user;
                 m_loginError = 3;
             }
         }
@@ -267,16 +274,29 @@ void LoginRegister::handleRegister(int& currentState) {
         }
         else {
             m_loginError = 0;
-            User user(name, uname, pwd);
-            if (user.addUser()) {
+            User *user=new User(name, uname, pwd);
+            if (user->addUser()) {
                 currentState = 2;  // MENU
+                if (m_currentUser != nullptr) {
+                    delete m_currentUser;
+                }
+                m_currentUser = user;  // 保存新创建的用户对象
             }
             else {
+                delete user;
                 m_loginError = 8;  // 用户已存在
             }
         }
     }
     if (m_buttons[4]->isClicked()) {
         currentState = 0;
+    }
+}
+
+void LoginRegister::reset() {
+    m_loginError = 0;
+    m_currentUser = nullptr;
+    for (int i = 0; i < m_textBoxes.size(); i++) {
+        m_textBoxes[i]->setText(L"");
     }
 }

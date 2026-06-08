@@ -3,11 +3,11 @@
 Text::Text(const std::wstring& text, int x, int y, int w, int h) : BasicWidget(x, y, w, h), m_text(text) {
 	ZeroMemory(&m_lf, sizeof(LOGFONT));
 	// 默认：微软雅黑、开启抗锯齿、默认字号20
-	wcscpy_s(m_lf.lfFaceName, _countof(m_lf.lfFaceName), _T("微软雅黑"));
+	wcscpy_s(m_lf.lfFaceName, _countof(m_lf.lfFaceName), _T("Arial"));
 	m_lf.lfQuality = ANTIALIASED_QUALITY; // 官方抗锯齿
 	m_lf.lfHeight = m_h;
 	m_lf.lfWidth = m_w;   // 0=自动等宽，字体不变形
-	m_lf.lfWeight = FW_NORMAL;
+	m_lf.lfWeight = FW_MEDIUM;
 
 }
 

@@ -90,25 +90,27 @@ void Tab::updateTabButtons() {
     if (m_tabLabels.empty()) return;
 
     // 计算每个Tab的宽度
-    int tabWidth = m_w /(int) m_tabLabels.size();
+    int tabWidth = m_w / (int)m_tabLabels.size();
 
     // 创建新的Tab按钮
     for (size_t i = 0; i < m_tabLabels.size(); i++) {
         if (i == (int)m_activeIndex) {
-        int tabX = m_x + (int)i * tabWidth;
-        Button* btn = new Button(m_tabLabels[i], tabX, m_y, tabWidth, m_h);
-        btn->setTextSize(16);
+            int tabX = m_x + (int)i * tabWidth;
+            Button* btn = new Button(m_tabLabels[i], tabX, m_y, tabWidth, m_h);
+            btn->setTextSize(16);
 
-        if (i == (int)m_activeIndex) {
-            btn->setDefaultColor(m_activeColor);
-            btn->setHoverColor(m_activeColor);
-            btn->setTextColor(m_activeTextColor);
-        } else {
-            btn->setDefaultColor(m_inactiveColor);
-            btn->setHoverColor(m_inactiveColor);
-            btn->setTextColor(m_inactiveTextColor);
+            if (i == (int)m_activeIndex) {
+                btn->setDefaultColor(m_activeColor);
+                btn->setHoverColor(m_activeColor);
+                btn->setTextColor(m_activeTextColor);
+            }
+            else {
+                btn->setDefaultColor(m_inactiveColor);
+                btn->setHoverColor(m_inactiveColor);
+                btn->setTextColor(m_inactiveTextColor);
+            }
+
+            m_tabButtons.push_back(btn);
         }
-
-        m_tabButtons.push_back(btn);
     }
 }

@@ -128,14 +128,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Account.cpp" />
+    <ClCompile Include="AccountCard.cpp" />
     <ClCompile Include="BasicWidget.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="LineChart.cpp" />
     <ClCompile Include="Login_Register.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="MoneyCard.cpp" />
+    <ClCompile Include="Select.cpp" />
     <ClCompile Include="SideBar.cpp" />
+    <ClCompile Include="Table.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TopBar.cpp" />
@@ -145,14 +149,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Account.h" />
+    <ClInclude Include="AccountCard.h" />
     <ClInclude Include="BasicWidget.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Configure.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="LineChart.h" />
     <ClInclude Include="Login_Register.h" />
     <ClInclude Include="Management.h" />
     <ClInclude Include="MoneyCard.h" />
+    <ClInclude Include="Select.h" />
     <ClInclude Include="SideBar.h" />
+    <ClInclude Include="Table.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TopBar.h" />

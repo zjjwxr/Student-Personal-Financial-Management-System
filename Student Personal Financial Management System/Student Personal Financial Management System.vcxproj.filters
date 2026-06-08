@@ -66,6 +66,18 @@
     <ClCompile Include="Login_Register.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Table.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LineChart.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountCard.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Management.h">
@@ -111,6 +123,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Login_Register.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Table.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LineChart.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountCard.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

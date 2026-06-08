@@ -23,9 +23,13 @@ public:
     TextBox(int x=0, int y=0, int w=0, int h=0, bool isPassword = false);
     void show()override;
     void eventLoop(const ExMessage& msg);
-    void setText(const std::wstring& text);
+
     void setTextColor(COLORREF color);
     void setTextFont(const std::wstring& fontName);
+    void setText(const std::wstring& text) {            //设置文本
+        m_text.setText(text);     
+        m_caretPosition = text.length();
+    }
     void setTextSize(int height, int width = 0);
     std::wstring getText() {
         return m_text.getText();

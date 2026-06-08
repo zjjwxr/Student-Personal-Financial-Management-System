@@ -1,15 +1,19 @@
 #include "SideBar.h"
 
-SideBar::SideBar(User* user, int x, int y, int w, int h):m_user(user),BasicWidget(x,y,w,h) {
+SideBar::SideBar(User* user, int x, int y, int w, int h):m_user(user),BasicWidget(x,y,w,h), m_currentPage(0) {
 	m_buttons.push_back(new Button(L"📈概况", 0, 100, 180, 55, 0, 0));
 	m_buttons.push_back(new Button(L"💰记账", 0, 155, 180, 55, 0, 0));
 	m_buttons.push_back(new Button(L"📋表单", 0, 210, 180, 55, 0, 0));
 	m_buttons.push_back(new Button(L"💳账户", 0, 265, 180, 55, 0, 0));
 	m_buttons.push_back(new Button(L"⚙️设置", 0, 320, 180, 55, 0, 0));
-	for (auto button : m_buttons) {
-		button->setHoverColor(RGB(46, 125, 255));
-		button->setTextSize(25);
-		button->setTextFont(L"楷体");
+	for (int i = 0; i < m_buttons.size(); i++) {
+		m_buttons[i]->setHoverColor(RGB(46, 125, 255));
+		m_buttons[i]->setTextSize(25);
+		m_buttons[i]->setTextFont(L"楷体");
+		if (i == 0) {
+			m_buttons[i]->setDefaultColor(RGB(46, 125, 255));
+			m_buttons[i]->setTextColor(WHITE);
+		}
 	}
 	m_realnameText = new Text(m_user->getRealname()); 
 	m_realnameText->setFixedSize(40);
@@ -20,8 +24,36 @@ SideBar::SideBar(User* user, int x, int y, int w, int h):m_user(user),BasicWidge
 
 void SideBar::eventLoop(const ExMessage& msg) {
 	m_msg = msg;
-	for (auto button : m_buttons) {
-		button->eventLoop(m_msg);
+	for (int i = 0; i < m_buttons.size(); i++) {
+		m_buttons[i]->eventLoop(m_msg);
+		if (m_buttons[i]->isClicked()) {
+			m_currentPage = i;
+			// 更新按钮状态
+			for (int j = 0; j < m_buttons.size(); j++) {
+				if (j == i) {
+					m_buttons[j]->setDefaultColor(RGB(46, 125, 255));
+					m_buttons[j]->setTextColor(WHITE);
+				} else {
+					m_buttons[j]->setDefaultColor(WHITE);
+					m_buttons[j]->setTextColor(BLACK);
+				}
+			}
+		}
+	}
+}
+
+void SideBar::setCurrentPage(int page) {
+	if (page >= 0 && page < m_buttons.size()) {
+		m_currentPage = page;
+		for (int j = 0; j < m_buttons.size(); j++) {
+			if (j == page) {
+				m_buttons[j]->setDefaultColor(RGB(46, 125, 255));
+				m_buttons[j]->setTextColor(WHITE);
+			} else {
+				m_buttons[j]->setDefaultColor(WHITE);
+				m_buttons[j]->setTextColor(BLACK);
+			}
+		}
 	}
 }
 
@@ -42,5 +74,5 @@ SideBar::~SideBar() {
 		delete button;
 	}
 	delete m_realnameText;
-	delete m_user;
+	//delete m_user;
 }

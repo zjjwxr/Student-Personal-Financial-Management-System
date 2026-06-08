@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "BasicWidget.h"
 #include "Configure.h"
 #include "Text.h"
@@ -21,6 +21,7 @@ public:
     Select(int x = 0, int y = 0, int w = 200, int h = 35);
     void show() override;
     void eventLoop(const ExMessage& msg);
+    bool isOpen() const { return m_isOpen; }
 
     void addOption(const std::wstring& option);
     void clearOptions();
@@ -38,4 +39,4 @@ private:
     void drawArrow();
     int getOptionHeight() const;
     int getDropdownHeight() const;
-};
+}; 

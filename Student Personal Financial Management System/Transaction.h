@@ -3,91 +3,49 @@
 #include <vector>
 #include <ctime>
 
+class User;
+
 enum class TransactionType {
-    INCOME,
-    EXPENSE
+    EXPENSE = 1,  // 支出
+    INCOME = 2   // 收入
 };
 
 class Transaction {
 private:
-    int id;                                              //单笔交易唯一id
-    TransactionType type;                                //收入或支出
-    std::wstring category;                                //交易主类别
-    std::wstring subCategory;                             //交易子类别
-    double amount;                                        //交易金额
-    std::wstring description;                              //该交易备注
-    std::wstring accountName;                               //交易账户（如微信）
-    time_t date;                                            //交易时间
-
-public:
-
-
-    //构建
-    Transaction();
-    Transaction(int tid, TransactionType t, const std::wstring& cat,
-        const std::wstring& subCat, double amt, const std::wstring& desc,
-        const std::wstring& accName, time_t dt);
-
-
-    //获取函数
-    int getId() const;
-    TransactionType getType() const;
-    std::wstring getCategory() const;
-    std::wstring getSubCategory() const;
-    double getAmount() const;
-    std::wstring getDescription() const;
-    std::wstring getAccountName() const;
-    time_t getDate() const;
-    void setId(int tid);
-    std::wstring getDateString() const;
+    int m_id;                                           //交易唯一标识ID
+    int m_type;                                //收入或支出 1.支出，2.收入
+    double m_amount;                                        //交易金额
+    int m_accountType;                               //交易账户（如微信）1.微信 2.支付宝 3.银行卡 4.现金
+    std::wstring m_date;                                       //交易时间
+    User* m_user;                                         //交易所属用户
     
-    //显示
-    void display() const;
-
-
-};
-
-
-
-
-
-//交易管理器
-class TransactionManager {
-private:
-    std::vector<Transaction> transactions;   //储存交易
-    int nextId;                              //递增id
-
+    static int generateUniqueId();                        //生成唯一ID
 public:
-    TransactionManager();
+    Transaction(User* user = nullptr,  int type = 1, const std::wstring date = L"", 
+        int accountType = 1,
+        double amount = 0.0,  int id = -1);
 
+    int getId() const { return m_id; }
+    void setId(int id) { m_id = id; }
+    int getType() const { return m_type; }
+    double getAmount() const { return m_amount; }
+    int getAccountType() const { return m_accountType; }
+    std::wstring getAccountName() const;
+    std::wstring getDateString() const { return m_date; }
+    User* getUser() const { return m_user; }
+    void setUser(User* user) { m_user = user; }
+    void setType(int type) { m_type = type; }
+    void setAmount(double amount) { m_amount = amount; }
+    void setAccountType(int accountType) { m_accountType = accountType; }
+    void setDate(const std::wstring& date) { m_date = date; }
 
-    bool addTransaction(TransactionType type, const std::wstring& category,      
-        const std::wstring& subCategory, double amount,
-        const std::wstring& description, const std::wstring& accountName);       //添加交易
+	void uploadTransaction(); //上传交易数据（更新已存在交易数据） 暂时用不上
 
-    bool deleteTransaction(int id);                                             //删去交易
-   
-    Transaction* findTransaction(int id);                                        //查询交易
-
-    std::vector<Transaction>& getAllTransactions();                              //获取所有交易
-
-    std::vector<Transaction> getTransactionsByCategory(const std::wstring& category);  //获取某一类别所有的交易
-
-    std::vector<Transaction> getTransactionsByDateRange(time_t startDate, time_t endDate);   //获取某段时间的所有交易
-
-    std::vector<Transaction> getTransactionsByMonth(int year, int month);                //获取某月的所有交易
-
-    double getTotalExpenseByCategory(const std::wstring& category) const;                  //获取某一类别所有支出交易
-
-    double getTotalIncomeByCategory(const std::wstring& category) const;                    //获取某一类别所有收入交易
-
-    double getTotalExpenseByDateRange(time_t startDate, time_t endDate) const;               //获取某月的所有支出交易
-
-    double getTotalIncomeByDateRange(time_t startDate, time_t endDate) const;                //获取某月的所有收入交易
-
-    void displayAllTransactions() const;
-
-    	bool saveToFile(const std::wstring& filepath) const;
-
-    	bool loadFromFile(const std::wstring& filepath);
+	bool addTransaction(); //添加新交易
 };
+
+
+
+
+
+

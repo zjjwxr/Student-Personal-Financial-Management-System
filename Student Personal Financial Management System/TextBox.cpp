@@ -1,10 +1,10 @@
-﻿#include "TextBox.h"
+#include "TextBox.h"
 
 TextBox::TextBox(int x, int y, int w, int h, bool isPassword) : BasicWidget(x, y, w, h), isPassword(isPassword) {}
 
 void TextBox::show() {
 	::setfillcolor(m_currentColor);
-	::fillroundrect(m_x, m_y, m_x + m_w, m_y + m_h, 10, 10);
+	::solidroundrect(m_x, m_y, m_x + m_w, m_y + m_h, 10, 10);
 
 	// 处理插入符闪烁
 	clock_t currentTime = clock();
@@ -122,12 +122,21 @@ void TextBox::setTextSize(int height, int width) {
 void TextBox::drawCaret() {
 	if (!isActive || !m_showCaret)return;
 
+	// 保存当前图形设置
+	COLORREF oldLineColor = ::getlinecolor();
+	LINESTYLE oldLineStyle;
+	::getlinestyle(&oldLineStyle);
+
 	int caretX = getCaretPositionX(m_caretPosition);
-	int caretY = m_y + (m_h - ::textheight(_T("A"))) / 2; // 使用"A"的高度作为基准
+	int caretY = m_y + (m_h - ::textheight(_T("A"))) / 2;
 
 	::setlinecolor(WHITE);
 	::setlinestyle(PS_SOLID);
 	::line(caretX, caretY, caretX, caretY + ::textheight(_T("A")));
+
+	// 恢复原来的图形设置
+	::setlinecolor(oldLineColor);
+	::setlinestyle(&oldLineStyle);
 }
 
 int TextBox::getCaretPositionX(int pos) {
@@ -169,7 +178,3 @@ void TextBox::deleteCharacter() {
 		updateCaretPosition(m_caretPosition - 1);
 	}
 }
-void TextBox::setText(const std::wstring& text) {
-	m_text.setText(text);
-}
-

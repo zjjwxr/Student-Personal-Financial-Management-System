@@ -1,7 +1,8 @@
-#pragma once
+﻿#pragma once
 #include "BasicWidget.h"
 #include "Configure.h"
 #include "Text.h"
+#include "Button.h"
 #include <vector>
 #include <string>
 #include <functional>

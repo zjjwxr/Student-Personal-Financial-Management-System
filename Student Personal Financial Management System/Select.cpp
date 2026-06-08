@@ -1,14 +1,24 @@
-#include "Select.h"
+﻿#include "Select.h"
 #include <algorithm>
 
 Select::Select(int x, int y, int w, int h)
     : BasicWidget(x, y, w, h), m_selectedIndex(-1), m_isOpen(false) {
     m_displayText = Text(L"", x + 10, y + 5, w - 40, h - 10);
-    m_displayText.setTextSize(18);
-    m_displayText.setTextColor(m_textColor);
+    m_displayText.setFixedSize(18);
+    m_displayText.setColor(m_textColor);
 }
 
 void Select::show() {
+    // 保存当前图形设置
+    COLORREF oldFillColor = ::getfillcolor();
+    COLORREF oldLineColor = ::getlinecolor();
+    LINESTYLE oldLineStyle;
+    ::getlinestyle(&oldLineStyle);
+    COLORREF oldTextColor = ::gettextcolor();
+    LOGFONT oldTextStyle; // 修正：使用 LOGFONT 类型
+    ::gettextstyle(&oldTextStyle); // 修正：传 LOGFONT* 类型
+    int oldBkMode = ::getbkmode();
+
     // 绘制下拉框主体
     setfillcolor(m_currentColor);
     solidrectangle(m_x, m_y, m_x + m_w, m_y + m_h);
@@ -21,7 +31,8 @@ void Select::show() {
     // 绘制选中的文本
     if (m_selectedIndex >= 0 && m_selectedIndex < m_options.size()) {
         m_displayText.setText(m_options[m_selectedIndex]);
-    } else if (!m_options.empty()) {
+    }
+    else if (!m_options.empty()) {
         m_displayText.setText(m_options[0]);
         m_selectedIndex = 0;
     }
@@ -34,9 +45,20 @@ void Select::show() {
     if (m_isOpen) {
         drawDropdown();
     }
+
+    // 恢复原来的图形设置
+    ::setfillcolor(oldFillColor);
+    ::setlinecolor(oldLineColor);
+    ::setlinestyle(&oldLineStyle);
+    ::settextcolor(oldTextColor);
+    ::settextstyle(&oldTextStyle); // 修正：传 LOGFONT* 类型
+    ::setbkmode(oldBkMode);
 }
 
 void Select::eventLoop(const ExMessage& msg) {
+   
+
+        
     if (msg.message == WM_LBUTTONDOWN) {
         // 检查是否点击了下拉框
         if (msg.x >= m_x && msg.x <= m_x + m_w && msg.y >= m_y && msg.y <= m_y + m_h) {
@@ -52,7 +74,8 @@ void Select::eventLoop(const ExMessage& msg) {
                     m_selectedIndex = clickedIndex;
                     m_isOpen = false;
                 }
-            } else {
+            }
+            else {
                 m_isOpen = false;
             }
         }
@@ -61,7 +84,8 @@ void Select::eventLoop(const ExMessage& msg) {
     // 悬停效果
     if (isHover() && !m_isOpen) {
         m_currentColor = m_hoverColor;
-    } else if (!m_isOpen) {
+    }
+    else if (!m_isOpen) {
         m_currentColor = m_defaultColor;
     }
 }
@@ -97,7 +121,7 @@ std::wstring Select::getSelectedText() const {
 
 void Select::setTextColor(COLORREF color) {
     m_textColor = color;
-    m_displayText.setTextColor(color);
+    m_displayText.setColor(color);
 }
 
 void Select::setBorderColor(COLORREF color) {
@@ -109,10 +133,20 @@ void Select::setTextFont(const std::wstring& fontName) {
 }
 
 void Select::setTextSize(int height, int width) {
-    m_displayText.setTextSize(height, width);
+    m_displayText.setFixedSize(height, width);
 }
 
 void Select::drawDropdown() {
+    // 保存当前图形设置
+    COLORREF oldFillColor = ::getfillcolor();
+    COLORREF oldLineColor = ::getlinecolor();
+    LINESTYLE oldLineStyle;
+    ::getlinestyle(&oldLineStyle);
+    COLORREF oldTextColor = ::gettextcolor();
+    LOGFONT oldTextStyle; // 修正：使用 LOGFONT 类型
+    ::gettextstyle(&oldTextStyle); // 修正：传 LOGFONT* 类型
+    int oldBkMode = ::getbkmode();
+
     int dropdownY = m_y + m_h;
     int dropdownHeight = getDropdownHeight();
 
@@ -133,7 +167,8 @@ void Select::drawDropdown() {
         // 绘制选项背景
         if (i == m_selectedIndex) {
             setfillcolor(RGB(230, 240, 255));
-        } else {
+        }
+        else {
             setfillcolor(WHITE);
         }
         solidrectangle(m_x, optionY, m_x + m_w, optionY + optionHeight);
@@ -150,9 +185,21 @@ void Select::drawDropdown() {
             line(m_x, optionY + optionHeight, m_x + m_w, optionY + optionHeight);
         }
     }
+
+    // 恢复原来的图形设置
+    ::setfillcolor(oldFillColor);
+    ::setlinecolor(oldLineColor);
+    ::setlinestyle(&oldLineStyle);
+    ::settextcolor(oldTextColor);
+    ::settextstyle(&oldTextStyle); // 修正：传 LOGFONT* 类型
+    ::setbkmode(oldBkMode);
 }
 
 void Select::drawArrow() {
+    COLORREF oldLineColor = ::getlinecolor();
+    LINESTYLE oldLineStyle;
+    ::getlinestyle(&oldLineStyle);
+
     int arrowX = m_x + m_w - 25;
     int arrowY = m_y + m_h / 2;
 
@@ -169,7 +216,8 @@ void Select::drawArrow() {
         points[1].y = arrowY + 5;
         points[2].x = arrowX + 5;
         points[2].y = arrowY + 5;
-    } else {
+    }
+    else {
         // 向下箭头
         points[0].x = arrowX;
         points[0].y = arrowY + 5;
@@ -179,6 +227,9 @@ void Select::drawArrow() {
         points[2].y = arrowY - 5;
     }
     polygon(points, 3);
+
+    ::setlinecolor(oldLineColor);
+    ::setlinestyle(&oldLineStyle);
 }
 
 int Select::getOptionHeight() const {
@@ -186,6 +237,6 @@ int Select::getOptionHeight() const {
 }
 
 int Select::getDropdownHeight() const {
-    int visibleOptions = std::min((int)m_options.size(), 5);
+    int visibleOptions = (std::min)((int)m_options.size(), 5);
     return visibleOptions * getOptionHeight();
 }

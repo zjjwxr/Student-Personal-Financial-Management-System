@@ -1,48 +1,44 @@
-﻿#include "MoneyCard.h"
+#include "MoneyCard.h"
+#include <sstream>
+#include <iomanip>
+#include <locale>
+#include <string>
 
-MoneyCard::MoneyCard(const std::wstring& title, const std::wstring& amount, int x, int y, int w, int h)
-	:BasicWidget(x,y,w,h),m_title(new Text(title)),m_amount(new Text(amount)){}
-MoneyCard::~MoneyCard() {
-	delete m_title;
-	delete m_amount;
-}
-void MoneyCard::show() {
-	if (m_title != nullptr) {
-		m_title->show();
-	}
-	if (m_amount != nullptr) {
-		m_amount->show();
-	}
+static std::wstring FormatDouble(double val) {
+	std::wostringstream woss;
+	woss.imbue(std::locale(""));       // 系统本地化，自动千分位
+	woss << std::fixed << std::setprecision(2) << val;
+	return woss.str();
 }
 
-void MoneyCard::setTitleColor(COLORREF color) {
-	if (m_title != nullptr) {
-		m_title->setColor(color);
-	}
+MoneyCard::MoneyCard(const std::wstring& title, double amount, int x, int y, int w, int h)
+	: BasicWidget(x, y, w, h), m_title(new Text(title)), m_titleColor(RGB(102, 102, 102)), m_amountColor(RGB(51, 51, 51)) {
+	std::wstring amountStr = FormatDouble(amount);
+	m_amount = new Text(L"¥" + amountStr);
+	m_title->setPosition(m_x + 20, m_y + 20);
+	m_amount->setPosition(m_x + 20, m_y + 50);
+	m_title->setFixedSize(14);
+	m_amount->setFixedSize(28);
+	m_title->setColor(m_titleColor);
+	m_amount->setColor(m_amountColor);
 }
 
-void MoneyCard::setAmountColor(COLORREF color) {
-	if (m_amount != nullptr) {
-		m_amount->setColor(color);
-	}
-}
-
-void MoneyCard::setAmount(const std::wstring& amount) {
-	if (m_amount != nullptr) {
-		m_amount->setText(amount);
-	}
+void MoneyCard::setAmount(double amount) {
+	std::wstring amountStr = FormatDouble(amount);
+	m_amount->setText(L"¥" + amountStr);
 }
 
 void MoneyCard::setTitle(const std::wstring& title) {
-	if (m_title != nullptr) {
-		m_title->setText(title);
-	}
+	m_title->setText(title);
 }
-void MoneyCard::setTextColor(COLORREF color) {
-	if (m_title != nullptr) {
-		m_title->setColor(color);
-	}
-	if (m_amount != nullptr) {
-		m_amount->setColor(color);
-	}
+
+void MoneyCard::show() {
+	setfillcolor(WHITE);
+	setlinecolor(RGB(240, 240, 240));
+	::solidroundrect(m_x, m_y, m_x + m_w, m_y + m_h, 12, 12);
+	::roundrect(m_x, m_y, m_x + m_w, m_y + m_h, 12, 12);
+	m_title->setColor(m_titleColor);
+	m_amount->setColor(m_amountColor);
+	m_title->show();
+	m_amount->show();
 }

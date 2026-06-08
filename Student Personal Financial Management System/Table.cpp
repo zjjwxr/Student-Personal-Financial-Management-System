@@ -1,269 +1,240 @@
-﻿#include "Table.h"
-#include <sstream>
-#include <iomanip>
+#include "Table.h"
 
-Table::Table(int x, int y, int w, int h)
-    : BasicWidget(x, y, w, h), m_headerHeight(40), m_rowHeight(40),
-      m_currentPage(1), m_rowsPerPage(10), m_totalPages(1) {
+
+Table::Table(int x, int y) :BasicWidget(x, y, 0, 0) {}
+
+void Table::SetRowCol(int rows, int cols) {
+    m_totalRows = rows;
+    m_totalCols = cols;
+    m_data.assign(m_totalRows, std::vector<TableCell>(m_totalCols));
+    m_headers.assign(m_totalCols, Text(L""));
+    m_colWidths.assign(m_totalCols, 80);//默认列宽80
+
 }
 
-void Table::show() {
-    // 绘制表格背景
-    setfillcolor(WHITE);
-    solidrectangle(m_x, m_y, m_x + m_w, m_y + m_h);
-
-    // 绘制表头
-    drawHeaders();
-
-    // 绘制数据行
-    drawRows();
-
-    // 绘制分页
-    drawPagination();
-
-    // 绘制边框
-    setlinestyle(PS_SOLID, 1);
-    setlinecolor(m_borderColor);
-    rectangle(m_x, m_y, m_x + m_w, m_y + m_h);
+void Table::SetColumnWidths(const std::vector<int>& widths) {
+    if (widths.size() != m_colWidths.size()) return;
+    m_colWidths = widths;
 }
 
-void Table::eventLoop(const ExMessage& msg) {
-    // 处理分页按钮点击
-    if (msg.message == WM_LBUTTONDOWN) {
-        int paginationY = m_y + m_headerHeight + getVisibleRowCount() * m_rowHeight;
-        int paginationHeight = 40;
+void Table::SetColumnWidth(int col, int width) {
+    if (col >= 0 && col <= m_totalCols) m_colWidths[col] = width;
+}
 
-        if (msg.y >= paginationY && msg.y <= paginationY + paginationHeight) {
-            int centerX = m_x + m_w / 2;
-            int btnWidth = 60;
-            int btnHeight = 30;
+void Table::SetRowHeight(int height) {
+    m_rowHeight = height;
+}
 
-            // 上一页按钮
-            if (msg.x >= centerX - btnWidth - 10 && msg.x <= centerX - 10 &&
-                msg.y >= paginationY + 5 && msg.y <= paginationY + 5 + btnHeight) {
-                if (m_currentPage > 1) {
-                    m_currentPage--;
-                }
-            }
-            // 下一页按钮
-            else if (msg.x >= centerX + 10 && msg.x <= centerX + 10 + btnWidth &&
-                     msg.y >= paginationY + 5 && msg.y <= paginationY + 5 + btnHeight) {
-                if (m_currentPage < m_totalPages) {
-                    m_currentPage++;
-                }
-            }
-        }
+void Table::SetHeaderHeight(int height) {
+    m_headerHeight = height;
+}
+
+void Table::SetPaginationHeight(int height) {
+    m_paginationHeight = height;
+}
+
+void Table::SetHeader(int col, const std::wstring& text) {
+    if (col >= 0 && col < m_totalCols)m_headers[col].setText(text);
+}
+
+void Table::SetHeaders(const std::vector<std::wstring>& headerTexts) {
+    if (headerTexts.size() != m_headers.size()) return;
+    for (int i = 0; i < headerTexts.size(); i++) {
+        m_headers[i].setText(headerTexts[i]);
     }
 }
 
-void Table::addHeader(const std::wstring& title, int width) {
-    TableHeader header;
-    header.title = title;
-    header.width = width;
-    m_headers.push_back(header);
+void Table::SetCellText(int row, int col, const std::wstring& text, COLORREF color) {
+    if (row >= 0 && row < m_totalRows && col >= 0 && col < m_totalCols) {
+        m_data[row][col].setText(text);
+        m_data[row][col].setColor(color);
+    }
 }
 
-void Table::clearHeaders() {
-    m_headers.clear();
+std::wstring Table::GetCellText(int row, int col) {
+    if (row >= 0 && row < m_totalRows && col >= 0 && col < m_totalCols) {
+        return m_data[row][col].m_text.getText();
+    }
+    return std::wstring(L"");
 }
 
-void Table::addRow(const TableRow& row) {
-    m_rows.push_back(row);
-    updateTotalPages();
+void Table::UpdateVisibleRows(int availableHeight) {
+    int headerHeight = m_showHeader ? m_headerHeight : 0;
+    int remainHeight = availableHeight - headerHeight;
+    if (remainHeight <= 0) m_visibleRows = 0;
+    else m_visibleRows = remainHeight / m_rowHeight;
+    UpdatePages();
 }
 
-void Table::clearRows() {
-    m_rows.clear();
-    m_currentPage = 1;
-    m_totalPages = 1;
+
+void Table::UpdatePages() {
+    if (m_visibleRows <= 0) {
+        m_totalPages = 1;
+    }
+    else {
+        m_totalPages = (m_totalRows + m_visibleRows - 1) / m_visibleRows;
+        if (m_totalPages < 1) m_totalPages = 1;
+    }
+    if (m_currentPage > m_totalPages) m_currentPage = m_totalPages;
+    if (m_currentPage < 1) m_currentPage = 1;
 }
 
-void Table::setCurrentPage(int page) {
+void Table::PrevPage() {
+    if (m_currentPage > 1) {
+        m_currentPage--;
+    }
+    UpdatePagination();
+}
+
+void Table::NextPage() {
+    if (m_currentPage < m_totalPages) {
+        m_currentPage++;
+    }
+    UpdatePagination();
+}
+
+void Table::GotoPage(int page) {
     if (page >= 1 && page <= m_totalPages) {
         m_currentPage = page;
     }
+    UpdatePagination();
 }
 
-int Table::getCurrentPage() const {
+int Table::GetCurrentPage() const {
     return m_currentPage;
 }
 
-int Table::getTotalPages() const {
+int Table::GetTotalPages() const {
     return m_totalPages;
 }
 
-void Table::setRowsPerPage(int rows) {
-    m_rowsPerPage = rows;
-    updateTotalPages();
+void Table::SetColorTheme(COLORREF borderColor, COLORREF headerBgColor, COLORREF headerTextColor, COLORREF cellBgColor,COLORREF cellTextColor) {
+    m_borderColor = borderColor;
+    m_headerBgColor = headerBgColor;
+    m_headerTextColor = headerTextColor;
+    m_cellBgColor = cellBgColor;
+    m_cellTextColor = cellTextColor;
 }
 
-void Table::setHeaderBgColor(COLORREF color) {
-    m_headerBgColor = color;
+
+
+int Table::GetTotalWidth() const {
+    int total = 0;
+    for (int w : m_colWidths) total += w;
+    return total;
 }
 
-void Table::setHeaderTextColor(COLORREF color) {
-    m_headerTextColor = color;
+int Table::GetTotalHeight() const {
+    int h = (m_showHeader ? m_headerHeight : 0) + m_visibleRows * m_rowHeight;
+    return h;
 }
 
-void Table::setRowBgColor(COLORREF color) {
-    m_rowBgColor = color;
-}
-
-void Table::setRowAltBgColor(COLORREF color) {
-    m_rowAltBgColor = color;
-}
-
-void Table::setBorderColor(COLORREF color) {
-    m_borderColor = color;
-}
-
-void Table::drawHeaders() {
-    // 绘制表头背景
-    setfillcolor(m_headerBgColor);
-    solidrectangle(m_x, m_y, m_x + m_w, m_y + m_headerHeight);
-
-    // 绘制表头文本
-    setbkmode(TRANSPARENT);
-    settextcolor(m_headerTextColor);
-    settextstyle(16, 0, L"微软雅黑");
-
-    int currentX = m_x;
-    for (size_t i = 0; i < m_headers.size(); i++) {
-        // 绘制表头边框
-        setlinecolor(m_borderColor);
-        line(currentX, m_y, currentX, m_y + m_headerHeight);
-
-        // 绘制表头文本
-        int textX = currentX + 10;
-        int textY = m_y + (m_headerHeight - 16) / 2;
-        outtextxy(textX, textY, m_headers[i].title.c_str());
-
-        currentX += m_headers[i].width;
+void Table::UpdatePagination() {
+    if (m_showPage.getText() == L"") {
+        int height = m_paginationHeight / 2;
+        m_showPage = Text(std::to_wstring(m_currentPage) + L" / " + std::to_wstring(m_totalPages));
+        m_showPage.setFixedSize(height);
     }
+    m_showPage.setText(std::to_wstring(m_currentPage) + L" / " + std::to_wstring(m_totalPages));
+    int tx = m_x + this->GetTotalWidth() / 2 - ::textwidth(m_showPage.getText().c_str()) / 2;
+    int ty = m_y + this->GetTotalHeight() + (m_paginationHeight - ::textheight(m_showPage.getText().c_str())) / 2;
+    m_showPage.setPosition(tx, ty);
+    if (m_buttons.size() == 0) {
+        int buttonHeight = m_paginationHeight * 2 / 3;
+        int buttonWidth = ::textwidth(L"上下一页");
 
-    // 绘制最后一列的右边框
-    line(currentX, m_y, currentX, m_y + m_headerHeight);
+        int temp = ::textwidth((L" / " + std::to_wstring(m_totalPages) + std::to_wstring(m_totalPages)).c_str());
+        int bx1 = m_x + this->GetTotalWidth() / 2 - temp / 2 - buttonWidth;
+        int bx2 = m_x + this->GetTotalWidth() / 2 + temp / 2 + temp / 4;
+        int by = m_y + this->GetTotalHeight() + m_paginationHeight / 4;
+        m_buttons.push_back(Button(L"上一页", bx1, by, buttonWidth, buttonHeight, 8, 8));
+        m_buttons.push_back(Button(L"下一页", bx2, by, buttonWidth, buttonHeight, 8, 8));
+        m_buttons[0].setDefaultColor(RGB(240, 240, 240));
+        m_buttons[0].setHoverColor(RGB(200, 200, 200));
+        m_buttons[0].setTextColor(BLACK);
 
-    // 绘制表头下边框
-    line(m_x, m_y + m_headerHeight, m_x + m_w, m_y + m_headerHeight);
+        m_buttons[1].setDefaultColor(RGB(240, 240, 240));
+        m_buttons[1].setHoverColor(RGB(200, 200, 200));
+        m_buttons[1].setTextColor(BLACK);
+    }
 }
 
-void Table::drawRows() {
-    int startRow = getStartRowIndex();
-    int visibleRows = getVisibleRowCount();
 
-    for (int i = 0; i < visibleRows; i++) {
-        int rowIndex = startRow + i;
-        if (rowIndex >= (int)m_rows.size()) break;
 
-        int rowY = m_y + m_headerHeight + i * m_rowHeight;
+void Table::show() {
+    int totalWidth = this->GetTotalWidth();
+    int currentY = m_y;
 
-        // 绘制行背景
-        if (i % 2 == 0) {
-            setfillcolor(m_rowBgColor);
-        } else {
-            setfillcolor(m_rowAltBgColor);
-        }
-        solidrectangle(m_x, rowY, m_x + m_w, rowY + m_rowHeight);
+    if (m_showHeader) {
+        ::setfillcolor(m_headerBgColor);
+        ::solidrectangle(m_x, currentY, m_x + totalWidth, currentY + m_headerHeight);
 
-        // 绘制单元格文本
-        const TableRow& row = m_rows[rowIndex];
         int currentX = m_x;
-
-        for (size_t j = 0; j < row.cells.size() && j < m_headers.size(); j++) {
-            // 绘制单元格边框
-            setlinecolor(m_borderColor);
-            line(currentX, rowY, currentX, rowY + m_rowHeight);
-
-            // 设置文本颜色
-            if (row.cells[j].isIncome) {
-                settextcolor(m_incomeColor);
-            } else if (row.cells[j].text.find(L'-') == 0) {
-                settextcolor(m_expenseColor);
-            } else {
-                settextcolor(row.cells[j].textColor);
-            }
-
-            // 绘制单元格文本
-            setbkmode(TRANSPARENT);
-            settextstyle(14, 0, L"微软雅黑");
-            int textX = currentX + 10;
-            int textY = rowY + (m_rowHeight - 14) / 2;
-            outtextxy(textX, textY, row.cells[j].text.c_str());
-
-            currentX += m_headers[j].width;
+        for (int i = 0; i < m_totalCols; i++) {
+            int textWidth = ::textwidth(m_headers[i].getText().c_str());
+            int textHeight = ::textheight(m_headers[i].getText().c_str());
+            int tx = currentX + (m_colWidths[i] - textWidth) / 2;
+            int ty = currentY + (m_headerHeight - textHeight) / 2;
+            m_headers[i].setPosition(tx, ty);
+            m_headers[i].show();
+            currentX += m_colWidths[i];
         }
 
-        // 绘制最后一列的右边框
-        line(currentX, rowY, currentX, rowY + m_rowHeight);
+        currentY += m_headerHeight;
+        ::setlinecolor(m_borderColor);
+        ::line(m_x, currentY, m_x + totalWidth, currentY);
+    }
 
-        // 绘制行下边框
-        line(m_x, rowY + m_rowHeight, m_x + m_w, rowY + m_rowHeight);
+    int startRow = (m_currentPage - 1) * m_visibleRows;
+    int endRow = startRow + m_visibleRows;
+    if (endRow > m_totalRows) endRow = m_totalRows;
+
+    for (int row = startRow; row < endRow; row++) {
+        ::setfillcolor(m_cellBgColor);
+        ::solidrectangle(m_x, currentY, m_x + totalWidth, currentY + m_rowHeight);
+
+        int currentX = m_x;
+        for (int col = 0; col < m_totalCols; col++) {
+            std::wstring text = m_data[row][col].m_text.getText();
+            int textWidth = ::textwidth(text.c_str());
+            int textHeight = ::textheight(text.c_str());
+            int tx = currentX + (m_colWidths[col] - textWidth) / 2;
+            int ty = currentY + (m_rowHeight - textHeight) / 2;
+            m_data[row][col].m_text.setPosition(tx, ty);
+            m_data[row][col].m_text.show();
+            currentX += m_colWidths[col];
+        }
+
+        currentY += m_rowHeight;
+        ::setlinecolor(m_borderColor);
+        ::line(m_x, currentY, m_x + totalWidth, currentY);
+    }
+
+
+    UpdatePagination();
+    if (m_buttons.size() >= 2) {
+        ::setfillcolor(RGB(248, 249, 250));
+        ::solidrectangle(m_x, currentY, m_x + totalWidth, currentY + m_paginationHeight);
+
+        m_buttons[0].show();
+        m_buttons[1].show();
+
+        m_showPage.show();
     }
 }
 
-void Table::drawPagination() {
-    int paginationY = m_y + m_headerHeight + getVisibleRowCount() * m_rowHeight;
-    int paginationHeight = 40;
+void Table::eventLoop(const ExMessage& msg) {
+    m_msg = msg;
 
-    // 绘制分页背景
-    setfillcolor(WHITE);
-    solidrectangle(m_x, paginationY, m_x + m_w, paginationY + paginationHeight);
+    if (m_buttons.size() >= 2) {
+        m_buttons[0].eventLoop(msg);
+        m_buttons[1].eventLoop(msg);
 
-    // 绘制分页按钮和信息
-    int centerX = m_x + m_w / 2;
-    int btnWidth = 60;
-    int btnHeight = 30;
-    int btnY = paginationY + 5;
-
-    // 上一页按钮
-    setfillcolor(RGB(245, 245, 245));
-    solidrectangle(centerX - btnWidth - 10, btnY, centerX - 10, btnY + btnHeight);
-    setlinestyle(PS_SOLID, 1);
-    setlinecolor(m_borderColor);
-    rectangle(centerX - btnWidth - 10, btnY, centerX - 10, btnY + btnHeight);
-
-    setbkmode(TRANSPARENT);
-    settextcolor(BLACK);
-    settextstyle(14, 0, L"微软雅黑");
-    outtextxy(centerX - btnWidth + 10, btnY + (btnHeight - 14) / 2, L"上一页");
-
-    // 页码信息
-    std::wstringstream ss;
-    ss << m_currentPage << L" / " << m_totalPages;
-    std::wstring pageInfo = ss.str();
-
-    int pageInfoWidth = textwidth(pageInfo.c_str());
-    outtextxy(centerX - pageInfoWidth / 2, btnY + (btnHeight - 14) / 2, pageInfo.c_str());
-
-    // 下一页按钮
-    setfillcolor(RGB(245, 245, 245));
-    solidrectangle(centerX + 10, btnY, centerX + 10 + btnWidth, btnY + btnHeight);
-    setlinestyle(PS_SOLID, 1);
-    setlinecolor(m_borderColor);
-    rectangle(centerX + 10, btnY, centerX + 10 + btnWidth, btnY + btnHeight);
-
-    settextcolor(BLACK);
-    outtextxy(centerX + 20, btnY + (btnHeight - 14) / 2, L"下一页");
-
-    // 绘制分页上边框
-    line(m_x, paginationY, m_x + m_w, paginationY);
-}
-
-int Table::getVisibleRowCount() const {
-    int availableHeight = m_h - m_headerHeight - 40; // 减去分页高度
-    int visibleRows = availableHeight / m_rowHeight;
-    return std::min(visibleRows, m_rowsPerPage);
-}
-
-int Table::getStartRowIndex() const {
-    return (m_currentPage - 1) * m_rowsPerPage;
-}
-
-void Table::updateTotalPages() {
-    m_totalPages = ((int)m_rows.size() + m_rowsPerPage - 1) / m_rowsPerPage;
-    if (m_totalPages == 0) m_totalPages = 1;
-    if (m_currentPage > m_totalPages) {
-        m_currentPage = m_totalPages;
+        if (m_buttons[0].isClicked()) {
+            PrevPage();
+        }
+        if (m_buttons[1].isClicked()) {
+            NextPage();
+        }
     }
 }

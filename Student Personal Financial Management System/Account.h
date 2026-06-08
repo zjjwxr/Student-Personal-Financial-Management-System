@@ -1,23 +1,32 @@
 ﻿#pragma once
-#include "FileManager.h"
 #include <string>
 #include <vector>
 #include<iostream>
 #include<iomanip>
 class User;
+
+enum class AccountType {
+    WECHAT = 1,    // 微信
+    ALIPAY = 2,    // 支付宝
+    BANK = 3,      // 银行卡
+    CASH = 4       // 现金
+};
+
 class Account {
 private:   
-    std::wstring m_accountName;   //账户名称
+    int m_accountType;   //账户名称 1.微信 2.支付宝 3.银行卡 4.现金
     double m_balance;            //账户余额
 	User* m_user;                //账户所属用户
 public:
-    Account(User* user=nullptr, const std::wstring& accountName=L"", double balance=0.0);
+    Account(User* user=nullptr, int accountName=1 , double balance=0.0);
 
-    std::wstring getAccountName() const { return m_accountName; };
+    int getAccountType() const { return m_accountType; }
+    std::wstring getAccountName() const;
     double getBalance() const { return m_balance; };
+    User* getUser() const { return m_user; }
 
 	void loadAccountBalance(); //加载账户余额(如果账户存在）
-	void uploadAccountBalance(); //上传账户余额（更新账户余额）
+	void uploadAccountBalance(); //上传账户余额（更新已存在账户余额）
 
     bool addAccount();//添加新账户
 
